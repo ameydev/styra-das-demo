@@ -1,0 +1,113 @@
+{
+    "apiVersion": "admission.k8s.io/v1",
+    "kind": "AdmissionReview",
+    "request": {
+      "dryRun": false,
+      "kind": {
+        "group": "",
+        "kind": "Pod",
+        "version": "v1"
+      },
+      "name": "nginx-pod",
+      "namespace": "default",
+      "object": {
+        "apiVersion": "v1",
+        "kind": "Pod",
+        "metadata": {
+          "annotations": {
+            "kubernetes.io/limit-ranger": "LimitRanger plugin set: cpu request for container nginx-pod"
+          },
+          "labels": {
+            "run": "nginx-pod"
+          },
+          "name": "nginx-pod",
+          "namespace": "default"
+        },
+        "spec": {
+          "containers": [
+            {
+              "image": "nginx",
+              "imagePullPolicy": "Always",
+              "name": "nginx-pod",
+              "resources": {
+                "requests": {
+                  "cpu": "100m"
+                }
+              },
+              "terminationMessagePolicy": "File",
+              "volumeMounts": [
+                {
+                  "mountPath": "/var/run/secrets/kubernetes.io/serviceaccount",
+                  "name": "default-token-8t8kx",
+                  "readOnly": true
+                }
+              ]
+            }
+          ],
+          "dnsPolicy": "ClusterFirst",
+          "enableServiceLinks": true,
+          "priority": 0,
+          "restartPolicy": "Always",
+          "schedulerName": "default-scheduler",
+          "securityContext": {},
+          "serviceAccount": "default",
+          "serviceAccountName": "default",
+          "terminationGracePeriodSeconds": 30,
+          "tolerations": [
+            {
+              "effect": "NoExecute",
+              "key": "node.kubernetes.io/not-ready",
+              "operator": "Exists",
+              "tolerationSeconds": 300
+            },
+            {
+              "effect": "NoExecute",
+              "key": "node.kubernetes.io/unreachable",
+              "operator": "Exists",
+              "tolerationSeconds": 300
+            }
+          ],
+          "volumes": [
+            {
+              "name": "default-token-8t8kx",
+              "secret": {
+                "secretName": "default-token-8t8kx"
+              }
+            }
+          ]
+        },
+        "status": {
+          "phase": "Pending",
+          "qosClass": "Burstable"
+        }
+      },
+      "oldObject": null,
+      "operation": "CREATE",
+      "options": {
+        "apiVersion": "meta.k8s.io/v1",
+        "fieldManager": "kubectl-run",
+        "kind": "CreateOptions"
+      },
+      "requestKind": {
+        "group": "",
+        "kind": "Pod",
+        "version": "v1"
+      },
+      "requestResource": {
+        "group": "",
+        "resource": "pods",
+        "version": "v1"
+      },
+      "resource": {
+        "group": "",
+        "resource": "pods",
+        "version": "v1"
+      },
+      "userInfo": {
+        "groups": [
+          "system:authenticated"
+        ],
+        "username": "amey@styra.com"
+      }
+    }
+  }

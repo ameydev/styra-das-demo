@@ -1,0 +1,95 @@
+{
+	"apiVersion": "admission.k8s.io/v1",
+	"kind": "AdmissionReview",
+	"request": {
+		"dryRun": false,
+		"kind": {
+			"group": "apps",
+			"kind": "Deployment",
+			"version": "v1"
+		},
+		"name": "nginx-deploy",
+		"namespace": "default",
+		"object": {
+			"apiVersion": "apps/v1",
+			"kind": "Deployment",
+			"metadata": {
+				"generation": 1,
+				"labels": {
+					"app": "nginx-deploy"
+				},
+				"name": "nginx-deploy",
+				"namespace": "default"
+			},
+			"spec": {
+				"progressDeadlineSeconds": 600,
+				"replicas": 1,
+				"revisionHistoryLimit": 10,
+				"selector": {
+					"matchLabels": {
+						"app": "nginx-deploy"
+					}
+				},
+				"strategy": {
+					"rollingUpdate": {
+						"maxSurge": "25%",
+						"maxUnavailable": "25%"
+					},
+					"type": "RollingUpdate"
+				},
+				"template": {
+					"metadata": {
+						"creationTimestamp": null,
+						"labels": {
+							"app": "nginx-deploy"
+						}
+					},
+					"spec": {
+						"containers": [{
+							"image": "nginx:1.15",
+							"imagePullPolicy": "IfNotPresent",
+							"name": "nginx",
+							"resources": {},
+							"terminationMessagePath": "/dev/termination-log",
+							"terminationMessagePolicy": "File"
+						}],
+						"dnsPolicy": "ClusterFirst",
+						"restartPolicy": "Always",
+						"schedulerName": "default-scheduler",
+						"securityContext": {},
+						"terminationGracePeriodSeconds": 30
+					}
+				}
+			},
+			"status": {}
+		},
+		"oldObject": null,
+		"operation": "CREATE",
+		"options": {
+			"apiVersion": "meta.k8s.io/v1",
+			"fieldManager": "kubectl-create",
+			"kind": "CreateOptions"
+		},
+		"requestKind": {
+			"group": "apps",
+			"kind": "Deployment",
+			"version": "v1"
+		},
+		"requestResource": {
+			"group": "apps",
+			"resource": "deployments",
+			"version": "v1"
+		},
+		"resource": {
+			"group": "apps",
+			"resource": "deployments",
+			"version": "v1"
+		},
+		"userInfo": {
+			"groups": [
+				"system:authenticated"
+			],
+			"username": "amey@styra.com"
+		}
+	}
+}
